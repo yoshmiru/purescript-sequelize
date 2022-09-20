@@ -34,11 +34,13 @@ associationTest :: AffTest () Unit
 associationTest = do
   {company, user} <- getUserAndCompany
   c1 <- create company $ Company {name: "ACME Co"}
-  let companyId = either (const 0) id $ runExcept do
+  let companyId = either (const 0) identity $ runExcept do
         f <- peek c1 "id"
         readInt f
-  su <- create user $ SuperUser {name: "Me", employerId: companyId}
-  userInst :: Maybe (Instance SuperUser) <- findOne user $
+  --su <- create user $ SuperUser {name: "Me", employerId: companyId}
+  su <- create user $ User {name: "Me"}
+  --userInst :: Maybe (Instance SuperUser) <- findOne user $
+  userInst :: Maybe (Instance User) <- findOne user $
     where_ := WHERE ["employerId" /\ Int companyId] <>
     include := {model: company, as: Alias "employer"}
   case userInst of

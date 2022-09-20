@@ -23,34 +23,34 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._array2 = function (a, b) {
+export function _array2(a, b) {
   return [a, b];
 };
 
-exports._array3 = function (a, b, c) {
+export function _array3(a, b, c) {
   return [a, b, c];
 };
 
-exports._array4 = function (a, b, c, d) {
+export function _array4(a, b, c, d) {
   return [a, b, c, d];
 };
 
-exports._array5 = function (a, b, c, d, e) {
+export function _array5(a, b, c, d, e) {
   return [a, b, c, d, e];
 };
 
-exports._array6 = function (a, b, c, d, e, f) {
+export function _array6(a, b, c, d, e, f) {
   return [a, b, c, d, e, f];
 };
 
-exports._array7 = function (a, b, c, d, e, f, g) {
+export function _array7(a, b, c, d, e, f, g) {
   return [a, b, c, d, e, f, g];
 };
 
-exports._array8 = function (a, b, c, d, e, f, g, h) {
+export function _array8(a, b, c, d, e, f, g, h) {
   return [a, b, c, d, e, f, g, h];
 };
 
-exports._array9 = function (a, b, c, d, e, f, g, h, i) {
+export function _array9(a, b, c, d, e, f, g, h, i) {
   return [a, b, c, d, e, f, g, h, i];
 };

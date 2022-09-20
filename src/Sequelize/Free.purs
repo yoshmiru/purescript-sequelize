@@ -51,14 +51,14 @@ module Sequelize.Free
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
+import Effect.Aff (Aff)
 import Control.Monad.Free (Free, foldFree, liftF)
 import Data.Either (Either)
 import Data.Functor.Coproduct (left, right)
 import Data.Functor.Coproduct.Nested (Coproduct4, coproduct4, in1, in2, in3, in4)
 import Data.Maybe (Maybe)
 import Data.Options (Options)
-import Data.StrMap (StrMap)
+import Data.Map (Map)
 import Sequelize.Class (class Model, class Submodel)
 import Sequelize.Free.Create as C
 import Sequelize.Free.Destroy as D
@@ -75,7 +75,7 @@ interpretCRUDF
   => Model a
   => ModelOf a
   -> CRUDF a b
-  ~> Aff (sequelize :: SEQUELIZE | e)
+  ~> Aff
 interpretCRUDF m = coproduct4
   (C.interpretCreate m)
   (R.interpretRead m)
@@ -165,10 +165,10 @@ min o s = inRead $ inCount $ R.minF o s
 update :: forall a b. Instance a -> a -> CRUD a b Unit
 update i a = inUpdate $ U.updateF i a
 
-increment :: forall a b. Instance a -> StrMap Int -> CRUD a b Unit
+increment :: forall a b. Instance a -> Map String Int -> CRUD a b Unit
 increment i m = inUpdate $ U.incrementF i m
 
-decrement :: forall a b. Instance a -> StrMap Int -> CRUD a b Unit
+decrement :: forall a b. Instance a -> Map String Int -> CRUD a b Unit
 decrement i m = inUpdate $ U.decrementF i m
 
 updateModel
@@ -189,5 +189,5 @@ runCRUD
   => Model a
   => ModelOf a
   -> CRUD a b
-  ~> Aff (sequelize :: SEQUELIZE | e)
+  ~> Aff
 runCRUD = foldFree <<< interpretCRUDF

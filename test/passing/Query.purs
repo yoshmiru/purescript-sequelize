@@ -27,7 +27,7 @@ module Test.Query where
 
 import Test.Prelude
 
-import Control.Monad.Aff (attempt)
+import Effect.Aff (attempt)
 
 z4 :: Car
 z4 = Car {make: "BMW", model: "Z4", hp: 335}

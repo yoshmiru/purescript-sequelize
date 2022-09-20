@@ -23,14 +23,14 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._getValues = function (instance) {
+export function _getValues(instance) {
   return instance.get({plain: true});
 };
 
-exports._equalsOneOf = function (i, is) {
+export function _equalsOneOf(i, is) {
   return i.equalsOneOf(is);
 }
 
-exports._unsafeEq = function (i1, i2) {
+export function _unsafeEq(i1, i2) {
   return i1.equals(i2);
 };

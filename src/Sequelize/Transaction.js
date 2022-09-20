@@ -25,17 +25,17 @@
 
 "use strict;"
 
-exports._transaction = function(sequelize){
+export function _transaction(sequelize){
     return sequelize.transaction();
 }
 
-exports._commitTransaction = function(transaction){
+export function _commitTransaction(transaction){
   return function(){
     transaction.commit();
   };
 }
 
-exports._rollbackTransaction = function (transaction) {
+export function _rollbackTransaction (transaction) {
   return function () {
     transaction.rollback();
   };

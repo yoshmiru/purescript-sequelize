@@ -23,43 +23,43 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._findById = function (model, id) {
+export function _findById(model, id) {
   return model.findById(id);
 };
 
-exports._findOne = function (model, opts) {
+export function _findOne(model, opts) {
   return model.findOne(opts);
 };
 
-exports._findOrBuild = function (model, opts) {
+export function _findOrBuild(model, opts) {
   return model.findOrBuild(opts);
 };
 
-exports._findOrCreate = function (model, opts) {
+export function _findOrCreate(model, opts) {
   return model.findOrCreate(opts);
 };
 
-exports._findAndCountAll = function (model, opts) {
+export function _findAndCountAll(model, opts) {
   return model.findAndCountAll(opts);
 };
 
-exports._findAll = function (model, opts) {
+export function _findAll(model, opts) {
   return model.findAll(opts);
 };
 
-exports._count = function (model, opts) {
+export function _count(model, opts) {
   return model.count(opts);
 };
 
-exports._max = function (model, opts, field) {
+export function _max(model, opts, field) {
   return model.max(field, opts);
 };
 
-exports._min = function (model, opts, field) {
+export function _min(model, opts, field) {
   return model.min(field, opts);
 };
 
-exports._query = function(seq) {
+export function _query = function(seq) {
   return function(rawquery) {
     return function() {
       return seq.query(rawquery, {

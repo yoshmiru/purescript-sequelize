@@ -23,18 +23,18 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._update = function (instance, defs) {
+export function _update(instance, defs) {
   return instance.update(defs);
 };
 
-exports._updateModel = function (modelOf, newVals, opts) {
+export function _updateModel(modelOf, newVals, opts) {
   return modelOf.update(newVals, opts);
 };
 
-exports._increment = function (instance, strmap) {
+export function _increment(instance, strmap) {
   return instance.increment(strmap);
 };
 
-exports._decrement = function (instance, strmap) {
+export function _decrement(instance, strmap) {
   return instance.decrement(strmap);
 };

@@ -32,13 +32,13 @@ var ns = cls.getNamespace('zipkin') || cls.createNamespace('zipkin');
 clsBluebird(ns, Promise);
 Sequelize.useCLS(ns);
 
-exports._newSequelize = function (options) {
+export function _newSequelize(options) {
   return function () {
     return new Sequelize(options);
   };
 };
 
-exports._syncSequelize = function (isJust, fromJust, sequelize, opts) {
+export function _syncSequelize(isJust, fromJust, sequelize, opts) {
   var newOpts = {};
   if (isJust(opts["match"])) {
     newOpts["match"] = fromJust(opts["match"])();
@@ -56,8 +56,8 @@ exports._syncSequelize = function (isJust, fromJust, sequelize, opts) {
   return sequelize.sync(newOpts);
 };
 
-exports._authenticate = function (sequelize) {
+export function _authenticate(sequelize) {
   return sequelize.authenticate();
 };
 
-exports.literal = Sequelize.literal;
+export function literal = Sequelize.literal;

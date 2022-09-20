@@ -27,11 +27,11 @@ module Test.Common where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Data.Foreign (toForeign)
-import Data.Foreign.Class (class Decode, class Encode)
+import Effect.Aff (Aff)
+import Foreign (unsafeToForeign)
+import Foreign.Generic.Class (class Decode, class Encode)
 import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
+import Data.Show.Generic (genericShow)
 import Data.Maybe (Maybe(..))
 import Data.Monoid (mempty)
 import Data.Options ((:=))
@@ -66,7 +66,7 @@ getCarCols = ["model" /\ modelOpts, "make" /\ makeOpts, "hp" /\ hpOpts]
     makeOpts = columnType := ModelTypes.String {length: Nothing}
     hpOpts = columnType := ModelTypes.Integer {length: Nothing}
 
-getCarModel :: forall e. Aff (sequelize :: SEQUELIZE | e) (ModelOf Car)
+getCarModel :: forall e. Aff (ModelOf Car)
 getCarModel = do
   conn <- myConn
   car <- makeModelOf conn mempty
@@ -94,7 +94,7 @@ getCompanyCols = ["name" /\ nameOpts]
   where
   nameOpts =
     columnType := ModelTypes.String {length: Nothing} <>
-    defaultValue := toForeign "ACME Co"
+    defaultValue := unsafeToForeign "ACME Co"
 
 newtype User = User { name :: String }
 derive instance eqUser :: Eq User
@@ -117,7 +117,7 @@ userCols = ["name" /\ nameOpts]
   where
   nameOpts =
     columnType := ModelTypes.String {length: Nothing} <>
-    defaultValue := toForeign "me"
+    defaultValue := unsafeToForeign "me"
 
 newtype SuperUser = SuperUser { name :: String, employerId :: Int }
 derive instance eqSuperUser :: Eq SuperUser
@@ -140,12 +140,12 @@ superUserCols = ["name" /\ nameOpts]
   where
   nameOpts =
     columnType := ModelTypes.String {length: Nothing} <>
-    defaultValue := toForeign "me"
+    defaultValue := unsafeToForeign "me"
 
-instance userSubSuper :: Submodel User SuperUser where
-  project (SuperUser {name}) = User {name}
+--instance userSubSuper :: Submodel User SuperUser where
+--  project (SuperUser {name}) = User {name}
 
-myConn :: forall e. Aff (sequelize :: SEQUELIZE | e) Conn
+myConn :: forall e. Aff Conn
 myConn = getConn opts
   where
     opts = database := "thunder"
@@ -155,7 +155,7 @@ myConn = getConn opts
 getUserAndCompany
   :: forall e
    .
-  Aff ( sequelize :: SEQUELIZE | e )
+  Aff
     { company :: ModelOf Company
     , user :: ModelOf User
     }

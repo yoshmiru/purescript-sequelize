@@ -56,30 +56,31 @@ module Sequelize.Connection
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Class (liftEff)
+import Effect.Aff (Aff)
+import Effect (Effect)
+import Effect.Class (liftEffect)
 import Control.Promise (Promise, toAff)
-import Data.Foreign (Foreign)
+import Foreign (Foreign)
 import Data.Function.Uncurried (Fn4, runFn4)
 import Data.Functor.Contravariant ((>$<))
 import Data.Maybe (Maybe, fromJust, isJust)
 import Data.Options (Option, Options, opt, options)
-import Data.StrMap (StrMap)
+import Data.Map (Map)
+import Partial.Unsafe (unsafePartial)
 import Sequelize.Types (Conn, ConnOpts, SEQUELIZE, SyncOpts, ReplicationOpts)
 
 foreign import _newSequelize
-  :: forall e. Foreign -> Eff ( sequelize :: SEQUELIZE | e ) Conn
+  :: forall e. Foreign -> Effect Conn
 
 getConn
-  :: forall e. Options ConnOpts -> Aff ( sequelize :: SEQUELIZE | e ) Conn
-getConn = liftEff <<< _newSequelize <<< options
+  :: forall e. Options ConnOpts -> Aff Conn
+getConn = liftEffect <<< _newSequelize <<< options
 
 foreign import _syncSequelize
   :: forall a.
       Fn4
       (Maybe a -> Boolean)
-      (Partial => Maybe a -> a)
+      (Maybe a -> a)
       Conn
       SyncOpts
       (Promise Unit)
@@ -88,13 +89,13 @@ syncConn
   :: forall e
    . Conn
   -> SyncOpts
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-syncConn conn opts = toAff $ runFn4 _syncSequelize isJust fromJust conn opts
+  -> Aff Unit
+syncConn conn opts = toAff $ runFn4 _syncSequelize isJust (unsafePartial fromJust) conn opts
 
 foreign import _authenticate
   :: Conn -> Promise Unit
 
-authenticate :: forall e. Conn -> Aff ( sequelize :: SEQUELIZE | e ) Unit
+authenticate :: forall e. Conn -> Aff Unit
 authenticate = toAff <<< _authenticate
 
 foreign import literal :: String -> Foreign
@@ -136,7 +137,7 @@ dialectModulePath :: Option ConnOpts String
 dialectModulePath = opt "dialectModulePath"
 
 -- | It's up to you to make sure the Foreign keys will make sense!
-dialectOptions :: Option ConnOpts (StrMap Foreign)
+dialectOptions :: Option ConnOpts (Map String Foreign)
 dialectOptions = opt "dialectOptions"
 
 storage :: Option ConnOpts String

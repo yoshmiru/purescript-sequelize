@@ -23,13 +23,13 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._makeModel = function (sequelize, name, attrs, opts) {
+export function _makeModel(sequelize, name, attrs, opts) {
   return function () {
     return sequelize.define(name, attrs, opts);
   };
 };
 
-exports._sync = function (isJust, fromJust, model, opts) {
+export function _sync(isJust, fromJust, model, opts) {
   var newOpts = {};
   if (isJust(opts["match"])) {
     newOpts["match"] = fromJust(opts["match"])();
@@ -47,39 +47,39 @@ exports._sync = function (isJust, fromJust, model, opts) {
   return model.sync(newOpts);
 };
 
-exports._drop = function (model) {
+export function _drop(model) {
   return model.drop();
 };
 
-exports._hasOne = function (source, target, alias) {
+export function _hasOne(source, target, alias) {
   return function() {
     source.hasOne(target, {as: alias});
     return null;
   };
 };
 
-exports._hasMany = function (source, target, alias) {
+export function _hasMany(source, target, alias) {
   return function () {
     source.hasOne(target, {as: alias});
     return null;
   };
 };
 
-exports._belongsTo = function (target, source, alias) {
+export function _belongsTo(target, source, alias) {
   return function() {
     target.belongsTo(source, {as: alias});
     return null;
   };
 };
 
-exports._belongsToMany = function (target, source, thru) {
+export function _belongsToMany(target, source, thru) {
   return function () {
     target.belongsToMany(source, {through: thru});
     return null;
   };
 };
 
-exports._belongsToWithOptions = function (target, source, op) {
+export function _belongsToWithOptions(target, source, op) {
   return function() {
     target.belongsTo(source, op);
     return null;

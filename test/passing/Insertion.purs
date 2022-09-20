@@ -29,8 +29,8 @@ import Data.Options
 import Test.Prelude
 
 import Control.Monad.Trampoline (done)
-import Data.Foreign (toForeign)
-import Data.StrMap as Map
+import Foreign (unsafeToForeign)
+import Data.Map as Map
 import Data.Tuple (Tuple(..))
 
 audi :: Car
@@ -100,4 +100,4 @@ updateModelTest carModel = do
     _ -> "This shouldn't log since we're testing with SQLite!"
   where
     opts = where_ := WHERE ["make" /\ String "Honda"]
-    updateOpts = Options [ "model" /\ (toForeign "testModel") ]
+    updateOpts = Options [ "model" /\ (unsafeToForeign "testModel") ]
