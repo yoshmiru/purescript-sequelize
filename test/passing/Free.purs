@@ -27,9 +27,9 @@ module Test.Free where
 
 import Test.Prelude
 
-import Data.Foreign (toForeign)
+import Foreign (unsafeToForeign)
 import Data.Options (Options(..))
-import Data.StrMap as Map
+import Data.Map as Map
 import Data.String (singleton)
 import Data.Tuple (Tuple(..))
 import Sequelize.Free as SQL
