@@ -64,13 +64,13 @@ import Sequelize.Free.Create as C
 import Sequelize.Free.Destroy as D
 import Sequelize.Free.Read as R
 import Sequelize.Free.Update as U
-import Sequelize.Types (Instance, ModelOf, SEQUELIZE)
+import Sequelize.Types (Instance, ModelOf)
 
 type CRUDF a b
   = Coproduct4 (C.CreateF b) (R.ReadF a b) (U.UpdateF a) (D.DestroyF a)
 
 interpretCRUDF
-  :: forall a b e
+  :: forall a b
    . Submodel a b
   => Model a
   => ModelOf a
@@ -184,7 +184,7 @@ destroy :: forall a b. Instance a -> CRUD a b Unit
 destroy = inDestroy <<< D.destroyF
 
 runCRUD
-  :: forall a b e
+  :: forall a b
    . Submodel a b
   => Model a
   => ModelOf a
