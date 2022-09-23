@@ -23,7 +23,7 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 
 export const _STRING    = Sequelize.STRING;
 export const _CHAR      = Sequelize.CHAR;

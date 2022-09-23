@@ -64,7 +64,6 @@ module Sequelize.Models.Types
     , enum
     , enum'
   , Length(..)
-  , PositiveInt
   , PositiveInt(..)
   , mkPositiveInt
   , sqzDataTypetoForeign

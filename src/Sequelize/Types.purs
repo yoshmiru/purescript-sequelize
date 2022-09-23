@@ -34,7 +34,9 @@ import Data.String.Regex (Regex)
 import Data.Tuple (Tuple)
 import Effect (Effect)
 
-foreign import null :: Foreign
+foreign import null_ :: Foreign
+null :: Foreign
+null = null_
 
 -- | the effect of using Sequelize
 foreign import data SEQUELIZE :: Effect

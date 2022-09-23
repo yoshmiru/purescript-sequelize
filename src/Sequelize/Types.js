@@ -23,4 +23,4 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-export null;
+export const null_ = null;

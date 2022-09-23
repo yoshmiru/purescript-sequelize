@@ -59,7 +59,7 @@ export function _min(model, opts, field) {
   return model.min(field, opts);
 };
 
-export function _query = function(seq) {
+export function _query(seq) {
   return function(rawquery) {
     return function() {
       return seq.query(rawquery, {
