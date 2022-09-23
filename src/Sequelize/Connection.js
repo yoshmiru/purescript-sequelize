@@ -23,10 +23,10 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-const Sequelize = require('sequelize');
-const Promise = require('bluebird');
-const clsBluebird = require('cls-bluebird');
-const cls = require('cls-hooked');
+import Sequelize from 'sequelize';
+import Promise from 'bluebird';
+import clsBluebird from 'cls-bluebird';
+import cls from 'cls-hooked';
 
 var ns = cls.getNamespace('zipkin') || cls.createNamespace('zipkin');
 clsBluebird(ns, Promise);
@@ -60,4 +60,4 @@ export function _authenticate(sequelize) {
   return sequelize.authenticate();
 };
 
-export function literal = Sequelize.literal;
+export const literal = Sequelize.literal;
