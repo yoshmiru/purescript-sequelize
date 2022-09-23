@@ -27,11 +27,9 @@ module Test.Free where
 
 import Test.Prelude
 
-import Foreign (unsafeToForeign)
 import Data.Options (Options(..))
 import Data.Map as Map
 import Data.String (codePointFromChar, singleton)
-import Data.Tuple (Tuple(..))
 import Sequelize.Free as SQL
 
 type App a = SQL.CRUD Car Car a
@@ -60,6 +58,7 @@ defiant
   , hp: 100000
   }
 
+updateOpts :: forall opt7. Options opt7
 updateOpts = Options
   [ "model" /\ (unsafeToForeign "Defiant")
   , "hp" /\ (unsafeToForeign 100000) ]

@@ -105,8 +105,7 @@ let upstream =
 in  upstream
   with foreign-generic =
       { dependencies =
-          [ "arrays"
-          
+          [ "prelude"
           ]
       , repo =
           "https://github.com/yoshmiru/purescript-foreign-generic.git"
