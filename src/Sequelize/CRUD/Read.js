@@ -23,43 +23,43 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._findById = function (model, id) {
+export function _findById (model, id) {
   return model.findById(id);
 };
 
-exports._findOne = function (model, opts) {
+export function_findOne (model, opts) {
   return model.findOne(opts);
 };
 
-exports._findOrBuild = function (model, opts) {
+export function_findOrBuild (model, opts) {
   return model.findOrBuild(opts);
 };
 
-exports._findOrCreate = function (model, opts) {
+export function_findOrCreate (model, opts) {
   return model.findOrCreate(opts);
 };
 
-exports._findAndCountAll = function (model, opts) {
+export function_findAndCountAll (model, opts) {
   return model.findAndCountAll(opts);
 };
 
-exports._findAll = function (model, opts) {
+export function_findAll (model, opts) {
   return model.findAll(opts);
 };
 
-exports._count = function (model, opts) {
+export function_count (model, opts) {
   return model.count(opts);
 };
 
-exports._max = function (model, opts, field) {
+export function_max (model, opts, field) {
   return model.max(field, opts);
 };
 
-exports._min = function (model, opts, field) {
+export function_min (model, opts, field) {
   return model.min(field, opts);
 };
 
-exports._query = function(seq) {
+export function_query(seq) {
   return function(rawquery) {
     return function() {
       return seq.query(rawquery, {
@@ -69,7 +69,7 @@ exports._query = function(seq) {
   }
 };
 
-exports["_query'"] = function(seq) {
+export function _query_ (seq) {
   return function(rawquery) {
     return function(rep) {
       return function(opts){

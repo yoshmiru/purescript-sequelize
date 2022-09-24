@@ -23,12 +23,12 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._destroy = function (instance) {
+export const _destroy = function (instance) {
   return function () {
     return instance.destroy();
   };
 };
 
-exports._delete = function (model,opts) {
+export const _delete = function (model,opts) {
   return model.destroy(opts);
 };

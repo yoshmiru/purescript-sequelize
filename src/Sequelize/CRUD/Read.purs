@@ -273,11 +273,11 @@ query' c q = do
   res <- liftEffect $ _query c q
   toAff res
 
-foreign import _query' :: forall a b e. Conn -> String -> Object Foreign -> Object Foreign -> (Effect (Promise b))
+foreign import _query_ :: forall a b e. Conn -> String -> Object Foreign -> Object Foreign -> (Effect (Promise b))
 
 query'' :: forall a b e. Conn -> String -> Object Foreign -> Object Foreign -> (Aff (Array a))
 query'' c q rep opts = do
-  res <- liftEffect $ _query' c q rep opts
+  res <- liftEffect $ _query_ c q rep opts
   toAff res
 
 foreign import _count

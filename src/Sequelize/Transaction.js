@@ -25,18 +25,18 @@
 
 "use strict;"
 
-exports._transaction = function(sequelize){
+export const _transaction = function(sequelize){
     return sequelize.transaction();
-}
+};
 
-exports._commitTransaction = function(transaction){
+export const _commitTransaction = function(transaction){
   return function(){
     transaction.commit();
   };
-}
+};
 
-exports._rollbackTransaction = function (transaction) {
+export const _rollbackTransaction = function (transaction) {
   return function () {
     transaction.rollback();
   };
-}
+};

@@ -23,22 +23,23 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-const Sequelize = require('sequelize');
-const Promise = require('bluebird');
-const clsBluebird = require('cls-bluebird');
-const cls = require('cls-hooked');
+import Sequelize from 'sequelize';
+
+import Promise from 'bluebird';
+import clsBluebird from 'cls-bluebird';
+import cls from 'cls-hooked';
 
 var ns = cls.getNamespace('zipkin') || cls.createNamespace('zipkin');
 clsBluebird(ns, Promise);
 Sequelize.useCLS(ns);
 
-exports._newSequelize = function (options) {
+export const _newSequelize = function (options) {
   return function () {
     return new Sequelize(options);
   };
 };
 
-exports._syncSequelize = function (isJust, fromJust, sequelize, opts) {
+export const _syncSequelize = function (isJust, fromJust, sequelize, opts) {
   var newOpts = {};
   if (isJust(opts["match"])) {
     newOpts["match"] = fromJust(opts["match"])();
@@ -56,8 +57,8 @@ exports._syncSequelize = function (isJust, fromJust, sequelize, opts) {
   return sequelize.sync(newOpts);
 };
 
-exports._authenticate = function (sequelize) {
+export const _authenticate = function (sequelize) {
   return sequelize.authenticate();
 };
 
-exports.literal = Sequelize.literal;
+export const literal = Sequelize.literal;

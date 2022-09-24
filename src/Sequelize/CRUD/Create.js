@@ -23,18 +23,18 @@
 * along with this program. If not, see <https://www.gnu.org/licenses/agpl.html>.
 */
 
-exports._build = function (model, defs) {
+export const _build = function (model, defs) {
   return model.build(defs);
 };
 
-exports._save = function (model) {
+export const _save = function (model) {
   return model.save();
 };
 
-exports._create = function (model, defs, opts) {
+export const _create = function (model, defs, opts) {
   return model.create(defs, opts);
 };
 
-exports._bulkCreate = function (model, arr, opts) {
+export const _bulkCreate = function (model, arr, opts) {
   return model.bulkCreate(arr, opts);
 };
