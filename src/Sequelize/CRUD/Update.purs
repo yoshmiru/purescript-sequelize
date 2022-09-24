@@ -32,14 +32,14 @@ module Sequelize.CRUD.Update
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
+import Effect.Aff (Aff)
 import Control.Promise (Promise, toAff)
 import Data.Array ((!!))
-import Data.Foreign (Foreign, isUndefined)
+import Foreign (Foreign, isUndefined)
+import Foreign.Object (Object)
 import Data.Function.Uncurried (Fn2, Fn3, runFn2, runFn3)
 import Data.Maybe (Maybe(Nothing, Just), maybe)
 import Data.Options (Options, opt, options, (:=))
-import Data.StrMap (StrMap)
 import Sequelize.CRUD.Create (bulkCreateWithOpts)
 import Sequelize.Class (class Model, class Submodel, encodeModel)
 import Sequelize.Types (Instance, ModelOf, SEQUELIZE)
@@ -56,7 +56,7 @@ update
   :: forall a e. Model a
   => Instance a
   -> a
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
+  -> Aff Unit
 update inst t = toAff $ runFn2 _update inst $ encodeModel t
 
 foreign import _updateModel
@@ -74,7 +74,6 @@ updateModel
   -> Options a
   -> Options a
   -> Aff
-    ( sequelize :: SEQUELIZE | e )
     { affectedCount :: Int, affectedRows :: Maybe (Array (Instance a)) }
 updateModel m a o = do
   arrForeign <- toAff $ updateM m (options a) (options o)
@@ -93,7 +92,6 @@ bulkUpdate
   -> Array (Options a)
   -> Options a
   -> Aff
-    ( sequelize :: SEQUELIZE | e )
     (Array (Instance Foreign))
 bulkUpdate m a o = do
     let b = map options a
@@ -107,26 +105,26 @@ foreign import _increment
   :: forall a.
      Fn2
      (Instance a)
-     (StrMap Int)
+     (Object Int)
      (Promise Unit)
 
 increment
   :: forall a e. Model a
   => Instance a
-  -> StrMap Int
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
+  -> Object Int
+  -> Aff Unit
 increment i m = toAff $ runFn2 _increment i m
 
 foreign import _decrement
   :: forall a.
      Fn2
      (Instance a)
-     (StrMap Int)
+     (Object Int)
      (Promise Unit)
 
 decrement
   :: forall a e. Model a
   => Instance a
-  -> StrMap Int
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
+  -> Object Int
+  -> Aff Unit
 decrement i m = toAff $ runFn2 _decrement i m

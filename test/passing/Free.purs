@@ -27,11 +27,9 @@ module Test.Free where
 
 import Test.Prelude
 
-import Foreign (unsafeToForeign)
 import Data.Options (Options(..))
-import Data.Map as Map
-import Data.String (singleton)
-import Data.Tuple (Tuple(..))
+import Data.String (codePointFromChar, singleton)
+import Foreign.Object as FO
 import Sequelize.Free as SQL
 
 type App a = SQL.CRUD Car Car a
@@ -40,7 +38,7 @@ enterprise :: Char -> Car
 enterprise c
   = Car
   { make: "Federation of Planets"
-  , model: "Enterprise " <> singleton c
+  , model: "Enterprise " <> (singleton (codePointFromChar c))
   , hp: 1000000
   }
 
@@ -60,9 +58,10 @@ defiant
   , hp: 100000
   }
 
+updateOpts :: forall opt7. Options opt7
 updateOpts = Options
-  [ "model" /\ (toForeign "Defiant")
-  , "hp" /\ (toForeign 100000) ]
+  [ "model" /\ (unsafeToForeign "Defiant")
+  , "hp" /\ (unsafeToForeign 100000) ]
 
 
 spaceships :: Array Car
@@ -90,12 +89,12 @@ testR3 = do
   i <- SQL.findByInt 900
   pure case i of
     Just inst -> peek inst "propertyDoesNotExist"
-    _ -> pure $ toForeign unit
+    _ -> pure $ unsafeToForeign unit
 
 testU1 :: App Unit
 testU1 = do
   i <- SQL.create $ enterprise 'F'
-  SQL.increment i (Map.singleton "hp" 1000000)
+  SQL.increment i (FO.singleton "hp" 1000000)
 
 testU2 :: App Unit
 testU2 = void $ -- changes voyager to the defiant

@@ -36,9 +36,9 @@ import Prelude
 
 import Control.Monad.Except (runExcept)
 import Data.Either (Either)
-import Data.Foreign (MultipleErrors)
-import Data.Foreign as F
-import Data.Foreign.Index (readProp)
+import Foreign (MultipleErrors)
+import Foreign as F
+import Foreign.Index (readProp)
 import Data.Function.Uncurried (Fn2, runFn2)
 import Sequelize.Class (class Model, decodeModel)
 import Sequelize.Types (Instance)

@@ -36,62 +36,64 @@ module Sequelize.Models
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Class (liftEff)
+import Effect.Aff (Aff)
+import Effect (Effect)
+import Effect.Class (liftEffect)
 import Control.Promise (Promise, toAff)
 import Data.Bifunctor (rmap)
-import Data.Foreign (Foreign)
 import Data.Function.Uncurried (Fn3, Fn4, runFn3, runFn4)
 import Data.Maybe (Maybe, fromJust, isJust)
 import Data.Options (Options, options)
-import Data.StrMap (StrMap, fromFoldable)
+import Foreign (Foreign)
+import Foreign.Object (Object, fromFoldable)
 import Sequelize.Class (class Model, modelName, modelCols)
 import Sequelize.Types (Alias, Conn, ModelOf, ModelOpts, SEQUELIZE, ModelCols, SyncOpts)
 import Type.Proxy (Proxy(..))
+import Partial.Unsafe (unsafePartial)
 
 foreign import _makeModel
   :: forall a e.
      Fn4
      Conn
      String -- Name
-     (StrMap Foreign) -- Schema
+     (Object Foreign) -- Schema
      Foreign -- Options for the model
-     (Eff ( sequelize :: SEQUELIZE | e ) (ModelOf a))
+     (Effect (ModelOf a))
 
 makeModelOf
   :: forall a e. Model a
   => Conn
   -> Options (ModelOpts a)
-  -> Aff ( sequelize :: SEQUELIZE | e ) (ModelOf a)
+  -> Aff (ModelOf a)
 makeModelOf conn opts =
   let opts' = options opts
-      columns = fromFoldable $ map (rmap options) $ modelCols :: ModelCols a
+      columns = fromFoldable $ map (rmap options) $ (modelCols :: ModelCols a)
       name = modelName (Proxy :: Proxy a)
-   in liftEff $ runFn4 _makeModel conn name columns opts'
+   in liftEffect $ runFn4 _makeModel conn name columns opts'
 
 foreign import _sync
-  :: forall a b.
+  :: forall a b c.
      Fn4
-     (Maybe b -> Boolean)
-     (Partial => Maybe a -> a)
-     (ModelOf a)
+     (Maybe a -> Boolean)
+     (Maybe b -> b)
+     (ModelOf c)
      SyncOpts
      (Promise Unit)
+
 
 sync
   :: forall a e. Model a
   => ModelOf a
   -> SyncOpts
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-sync mod force = toAff $ runFn4 _sync isJust fromJust mod force
+  -> Aff Unit
+sync mod force = toAff $ runFn4 _sync isJust (unsafePartial fromJust) mod force
 
 foreign import _drop :: forall a. ModelOf a -> Promise Unit
 
 drop
   :: forall a e. Model a
   => ModelOf a
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
+  -> Aff Unit
 drop = toAff <<< _drop
 
 foreign import _hasOne
@@ -100,7 +102,7 @@ foreign import _hasOne
      (ModelOf a)
      (ModelOf b)
      alias
-     (Eff e Unit)
+     (Effect Unit)
 
 -- | HasOne associations are associations where the foreign key for the
 -- | one-to-one relation exists on the target model."
@@ -110,8 +112,8 @@ hasOne
   => ModelOf source
   -> ModelOf target
   -> Alias
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-hasOne s t a = liftEff $ runFn3 _hasOne s t a
+  -> Aff Unit
+hasOne s t a = liftEffect $ runFn3 _hasOne s t a
 
 foreign import _hasMany
   :: forall a b alias e.
@@ -119,7 +121,7 @@ foreign import _hasMany
      (ModelOf a)
      (ModelOf b)
      alias
-     (Eff e Unit)
+     (Effect Unit)
 
 -- | HasOne associations are associations where the foreign key for the
 -- | one-to-one relation exists on the target model."
@@ -129,8 +131,8 @@ hasMany
   => ModelOf source
   -> ModelOf target
   -> Alias
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-hasMany s t a = liftEff $ runFn3 _hasMany s t a
+  -> Aff Unit
+hasMany s t a = liftEffect $ runFn3 _hasMany s t a
 
 foreign import _belongsTo
   :: forall a b alias e.
@@ -138,7 +140,7 @@ foreign import _belongsTo
      (ModelOf a)
      (ModelOf b)
      alias
-     (Eff e Unit)
+     (Effect Unit)
 
 -- | #Associations
 -- | See: http://docs.sequelizejs.com/manual/tutorial/associations.html
@@ -151,8 +153,8 @@ belongsTo
   => ModelOf target
   -> ModelOf source
   -> Alias
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-belongsTo t s a = liftEff $ runFn3 _belongsTo t s a
+  -> Aff Unit
+belongsTo t s a = liftEffect $ runFn3 _belongsTo t s a
 
 foreign import _belongsToMany
   :: forall a b through e.
@@ -160,7 +162,7 @@ foreign import _belongsToMany
      (ModelOf a)
      (ModelOf b)
      through
-     (Eff e Unit)
+     (Effect Unit)
 
 belongsToMany
   :: forall source target e. Model source
@@ -168,8 +170,8 @@ belongsToMany
   => ModelOf target
   -> ModelOf source
   -> Alias
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-belongsToMany t s a = liftEff $ runFn3 _belongsToMany t s a
+  -> Aff Unit
+belongsToMany t s a = liftEffect $ runFn3 _belongsToMany t s a
 
 foreign import _belongsToWithOptions
   :: forall a b e.
@@ -177,7 +179,7 @@ foreign import _belongsToWithOptions
      (ModelOf a)
      (ModelOf b)
      Foreign
-     (Eff e Unit)
+     (Effect Unit)
 
 belongsToWithOptions
   :: forall source target e. Model source
@@ -185,5 +187,5 @@ belongsToWithOptions
   => ModelOf target
   -> ModelOf source
   -> Foreign
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
-belongsToWithOptions t s op = liftEff $ runFn3 _belongsToWithOptions t s op
+  -> Aff Unit
+belongsToWithOptions t s op = liftEffect $ runFn3 _belongsToWithOptions t s op

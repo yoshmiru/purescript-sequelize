@@ -11,7 +11,29 @@ When creating a new Spago project, you can use
 to generate this file without the comments in this block.
 -}
 { name = "sequelize"
-, dependencies = [ "console", "effect", "foreign", "options", "ordered-collections", "prelude", "strings", "tuples" ]
+, dependencies =
+    [ "arrays"
+    , "bifunctors"
+    , "contravariant"
+    , "either"
+    , "enums"
+    , "exceptions"
+    , "foldable-traversable"
+    , "functions"
+    , "functors"
+    , "lists"
+    , "maybe"
+    , "newtype"
+    , "partial"
+    , "transformers"
+    , "unsafe-coerce"
+    , "aff", "aff-promise", "console", "effect"
+    , "foreign", "foreign-generic"
+    , "foreign-object"
+    , "free", "options", "prelude"
+    , "simple-json"
+    , "strings", "tuples"
+    ]
 , packages = ./packages.dhall
 , sources = [ "src/**/*.purs", "test/**/*.purs" ]
 }

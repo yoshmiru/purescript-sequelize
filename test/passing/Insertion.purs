@@ -29,8 +29,8 @@ import Data.Options
 import Test.Prelude
 
 import Control.Monad.Trampoline (done)
-import Data.Foreign (toForeign)
-import Data.StrMap as Map
+import Foreign (unsafeToForeign)
+import Foreign.Object as FO
 import Data.Tuple (Tuple(..))
 
 audi :: Car
@@ -83,10 +83,10 @@ deleteTest carModel = do
     _ -> "Deleted " <> show x.affectedCount <> " records."
 
 incrementTest :: Instance Car -> AffTest () Unit
-incrementTest inst = increment inst $ Map.fromFoldable [Tuple "hp" 15]
+incrementTest inst = increment inst $ FO.fromFoldable [Tuple "hp" 15]
 
 decrementTest :: Instance Car -> AffTest () Unit
-decrementTest inst = decrement inst $ Map.fromFoldable [Tuple "hp" 10]
+decrementTest inst = decrement inst $ FO.fromFoldable [Tuple "hp" 10]
 
 bulkCreateTest :: ModelOf Car -> AffTest () (Array (Instance Car)) 
 bulkCreateTest carModel = bulkCreate carModel [audi, honda]
@@ -100,4 +100,4 @@ updateModelTest carModel = do
     _ -> "This shouldn't log since we're testing with SQLite!"
   where
     opts = where_ := WHERE ["make" /\ String "Honda"]
-    updateOpts = Options [ "model" /\ (toForeign "testModel") ]
+    updateOpts = Options [ "model" /\ (unsafeToForeign "testModel") ]

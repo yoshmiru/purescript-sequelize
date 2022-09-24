@@ -27,7 +27,7 @@ module Sequelize.Free.Destroy where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
+import Effect.Aff (Aff)
 import Sequelize.CRUD.Destroy as Destroy
 import Sequelize.Class (class Model)
 import Sequelize.Types (Instance, SEQUELIZE)
@@ -41,5 +41,5 @@ interpretDestroy
   :: forall a e
    . Model a
   => DestroyF a
-  ~> Aff (sequelize :: SEQUELIZE | e)
+  ~> Aff
 interpretDestroy (Destroy i next) = next <$ Destroy.destroy i

@@ -25,14 +25,14 @@
 
 module Sequelize.Types where
 
-import Control.Monad.Eff (kind Effect)
-import Data.Foreign (Foreign)
+import Foreign (Foreign)
+import Foreign.Object (Object)
 import Data.Maybe (Maybe(..))
 import Data.Newtype (class Newtype)
 import Data.Options (Options)
-import Data.StrMap (StrMap)
 import Data.String.Regex (Regex)
 import Data.Tuple (Tuple)
+import Effect (Effect)
 
 foreign import null :: Foreign
 
@@ -100,7 +100,7 @@ type ModelCols a = Array (Tuple String (Options (ColumnOpts a)))
 
 -- queries
 
-newtype WhereClause = WhereClause (StrMap Foreign)
+newtype WhereClause = WhereClause (Object Foreign)
 
 derive instance newtypeWhereClause :: Newtype WhereClause _
 

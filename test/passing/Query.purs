@@ -27,8 +27,9 @@ module Test.Query where
 
 import Test.Prelude
 
-import Control.Monad.Aff (attempt)
-import Data.StrMap as StrMap
+import Effect.Aff (attempt)
+import Foreign.Object as FO
+import Sequelize.CRUD.Read
 
 z4 :: Car
 z4 = Car {make: "BMW", model: "Z4", hp: 335}
@@ -118,7 +119,7 @@ rawQuery conn = do
 
 rawsQueryWithRep :: Conn -> AffTest () Unit
 rawsQueryWithRep conn = do
-  void $ query'' conn "SELECT * FROM cars where make = :make" replacements StrMap.empty
+  void $ query'' conn "SELECT * FROM cars where make = :make" replacements FO.empty
   where
     replacements =
-      StrMap.singleton "make" (toForeign "BMW")
+      FO.singleton "make" (unsafeToForeign "BMW")

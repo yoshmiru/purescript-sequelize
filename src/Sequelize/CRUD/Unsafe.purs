@@ -27,7 +27,7 @@ module Sequelize.CRUD.Unsafe where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
+import Effect.Aff (Aff)
 import Data.Maybe (Maybe)
 import Data.Options (Options)
 import Sequelize.CRUD.Update (update, updateModel)
@@ -42,7 +42,6 @@ unsafeUpdateModel
   -> b
   -> Options a
   -> Aff
-    ( sequelize :: SEQUELIZE | e )
     { affectedCount :: Int, affectedRows :: Maybe (Array (Instance a)) }
 unsafeUpdateModel m b o = updateModel m (unsafeCoerce b) o
 
@@ -51,5 +50,5 @@ unsafeUpdate
    . Model a
   => Instance a
   -> b
-  -> Aff ( sequelize :: SEQUELIZE | e ) Unit
+  -> Aff Unit
 unsafeUpdate inst t = update inst (unsafeCoerce t)
